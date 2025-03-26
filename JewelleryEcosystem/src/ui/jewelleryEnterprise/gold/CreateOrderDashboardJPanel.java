@@ -1,0 +1,568 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
+package ui.jewelleryEnterprise.gold;
+
+import java.awt.CardLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import model.EcoSystem;
+import model.customer.CustomerProfile;
+import model.enterprise.Enterprise;
+import model.order.Order;
+import model.organization.BillingOrganization;
+import model.organization.HandCraftOrganization;
+import model.organization.Organization;
+import model.product.GoldProduct;
+import model.product.Product;
+import model.userAccount.UserAccount;
+import model.workQueue.WorkRequest;
+
+/**
+ *
+ * @author lenovo
+ */
+public class CreateOrderDashboardJPanel extends javax.swing.JPanel {
+
+    /**
+     * Creates new form CreateOrderDashboardJPanel
+     */
+    JPanel userProcessContainer;
+    UserAccount account;
+    Organization organization;
+    Enterprise enterprise;
+    EcoSystem system;
+    private Order order;
+    private CustomerProfile selectedCustomer;
+    
+    public CreateOrderDashboardJPanel(JPanel userProcessContainer, UserAccount account, Organization organization, Enterprise enterprise, EcoSystem system) {
+        initComponents();
+        this.userProcessContainer = userProcessContainer;
+        this.account = account;
+        this.organization = organization;
+        this.enterprise = enterprise;
+        this.system = system;
+        selectedCustomer = null;
+        order = null;
+        populateTable();
+        populateProductTable();
+        populateCartTable();
+    }
+    
+    private void populateTable(){
+        DefaultTableModel model = (DefaultTableModel) tblCustomer.getModel();
+        model.setRowCount(0);
+        for (CustomerProfile customer : enterprise.getCustomerDirectory().getCustomers()) {
+            Object row[] = new Object[4];
+            row[0] = customer;
+            row[1] = customer.getPerson().getPhoneNumber();
+            row[2] = customer.getPerson().getEmailId();
+            row[3] = customer.getPerson().getHomeAddress().getCity();      
+            model.addRow(row);  
+        }
+    }
+    
+    private void populateTable(String keyword) {
+        DefaultTableModel model = (DefaultTableModel) tblCustomer.getModel();
+        model.setRowCount(0);
+        for (CustomerProfile customer : enterprise.getCustomerDirectory().getCustomers()) {
+            if (customer.getPerson().getFirstName().contains(keyword) ||
+                customer.getPerson().getMiddleName().contains(keyword) ||
+                customer.getPerson().getLastName().contains(keyword)) {
+                Object row[] = new Object[4];
+                row[0] = customer;
+                row[1] = customer.getPerson().getPhoneNumber();
+                row[2] = customer.getPerson().getEmailId();
+                row[3] = customer.getPerson().getHomeAddress().getCity();      
+                model.addRow(row); 
+            } 
+        }
+    }
+    
+    private void populateProductTable(){
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setRowCount(0);
+        for (GoldProduct product : enterprise.getProducts().getGoldProducts()) {
+            Object row[] = new Object[8];
+            row[0] = product;
+            row[1] = product.getGoldWeight();
+            row[2] = product.getOtherWeight();
+            row[3] = product.getWeight();
+            row[4] = product.getKarat();
+            row[5] = product.getLaborCharges();
+            row[6] = product.getExternalCharges();
+            row[7] = product.getPrice();
+            model.addRow(row);
+        }
+    }
+    
+    private void populateProductTable(String keyword) {
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setRowCount(0);
+        for (GoldProduct product : enterprise.getProducts().getGoldProducts()) {
+            if (product.getName().contains(keyword)) {
+                Object row[] = new Object[8];
+                row[0] = product;
+                row[1] = product.getGoldWeight();
+                row[2] = product.getOtherWeight();
+                row[3] = product.getWeight();
+                row[4] = product.getKarat();
+                row[5] = product.getLaborCharges();
+                row[6] = product.getExternalCharges();
+                row[7] = product.getPrice();
+                model.addRow(row);
+            } 
+        }
+    }
+    
+    private void populateCartTable() {
+        if (order != null) {
+            DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+            model.setRowCount(0);
+            for (Product p: this.order.getProductList()) {
+                Object row[] = new Object[2];
+                row[0] = p;
+                row[1] = p.getPrice();
+                model.addRow(row);
+            }
+        } else {
+            DefaultTableModel model = (DefaultTableModel) tblCart.getModel();
+            model.setRowCount(0);
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        btnSearchCustomer = new javax.swing.JButton();
+        txtSearchCustomer = new javax.swing.JTextField();
+        btnBack = new javax.swing.JButton();
+        lblRepairGold = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCustomer = new javax.swing.JTable();
+        btnSearchProduct = new javax.swing.JButton();
+        txtSearchProduct = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblProduct = new javax.swing.JTable();
+        btnAddToCart = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtOrderID = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblCart = new javax.swing.JTable();
+        btnRemoveFromCart = new javax.swing.JToggleButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtTax = new javax.swing.JTextField();
+        lblFinalPrice = new javax.swing.JLabel();
+        txtFinalPrice = new javax.swing.JTextField();
+        btnSendToManifacturing = new javax.swing.JButton();
+        btnSendToBilling = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(222, 181, 126));
+
+        btnSearchCustomer.setBackground(new java.awt.Color(64, 52, 36));
+        btnSearchCustomer.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSearchCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchCustomer.setText("Search Customer");
+        btnSearchCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCustomerActionPerformed(evt);
+            }
+        });
+
+        btnBack.setBackground(new java.awt.Color(64, 52, 36));
+        btnBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        lblRepairGold.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblRepairGold.setForeground(new java.awt.Color(64, 52, 36));
+        lblRepairGold.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblRepairGold.setText("Create Order");
+
+        tblCustomer.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Customer Name", "Phone Number", "Email ", "Address"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCustomer);
+
+        btnSearchProduct.setBackground(new java.awt.Color(64, 52, 36));
+        btnSearchProduct.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSearchProduct.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchProduct.setText("Search Product");
+        btnSearchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchProductActionPerformed(evt);
+            }
+        });
+
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Product Name", "Gold Weight", "Other Weight", "Total Weight", "Karat", "Labour Charges", "External Charges", "Price"
+            }
+        ));
+        jScrollPane2.setViewportView(tblProduct);
+
+        btnAddToCart.setBackground(new java.awt.Color(64, 52, 36));
+        btnAddToCart.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAddToCart.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddToCart.setText("Add To Cart");
+        btnAddToCart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddToCartActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("OrderID");
+
+        txtOrderID.setEditable(false);
+
+        tblCart.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Product Name", "Price"
+            }
+        ));
+        jScrollPane3.setViewportView(tblCart);
+
+        btnRemoveFromCart.setBackground(new java.awt.Color(64, 52, 36));
+        btnRemoveFromCart.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnRemoveFromCart.setForeground(new java.awt.Color(255, 255, 255));
+        btnRemoveFromCart.setText("Remove From Cart");
+        btnRemoveFromCart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveFromCartActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Tax(3.3%)");
+
+        txtTax.setEditable(false);
+
+        lblFinalPrice.setText("Total Price");
+
+        txtFinalPrice.setEditable(false);
+
+        btnSendToManifacturing.setBackground(new java.awt.Color(64, 52, 36));
+        btnSendToManifacturing.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSendToManifacturing.setForeground(new java.awt.Color(255, 255, 255));
+        btnSendToManifacturing.setText("Send to Manifacturing");
+        btnSendToManifacturing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendToManifacturingActionPerformed(evt);
+            }
+        });
+
+        btnSendToBilling.setBackground(new java.awt.Color(64, 52, 36));
+        btnSendToBilling.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSendToBilling.setForeground(new java.awt.Color(255, 255, 255));
+        btnSendToBilling.setText("Send To Billing");
+        btnSendToBilling.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendToBillingActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearchCustomer))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearchProduct))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnAddToCart)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane3)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btnRemoveFromCart)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 139, Short.MAX_VALUE)
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(lblFinalPrice)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtFinalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 10, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblRepairGold, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSendToManifacturing)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnSendToBilling)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFinalPrice, txtOrderID, txtSearchCustomer, txtSearchProduct, txtTax});
+
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblRepairGold)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearchCustomer)
+                    .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearchProduct)
+                    .addComponent(txtSearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddToCart)
+                    .addComponent(jLabel1)
+                    .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRemoveFromCart)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFinalPrice)
+                    .addComponent(txtFinalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSendToManifacturing)
+                    .addComponent(btnSendToBilling))
+                .addContainerGap(66, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddToCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCartActionPerformed
+        // Check if customer is selected or not
+        int selectedRow = tblCustomer.getSelectedRow();
+        if (selectedRow < 0){
+            JOptionPane.showMessageDialog(this, "Please select customer first.");
+            return;
+        }
+        CustomerProfile customer = (CustomerProfile) tblCustomer.getValueAt(selectedRow, 0);
+        // Checking if order is of same customer or not
+        if (selectedCustomer != null && !customer.equals(selectedCustomer)) {
+            JOptionPane.showMessageDialog(this, "Customer cannot be different for same order.");
+            return;
+        }
+        // Check if product is selected or not
+        int selectedRowProduct = tblProduct.getSelectedRow();
+        if (selectedRowProduct < 0){
+            JOptionPane.showMessageDialog(this, "Please select product to add.");
+            return;
+        }
+        Product product = (Product) tblProduct.getValueAt(selectedRowProduct, 0);
+        // Creating order if not already created otherwise adding product to same order
+        if (order == null) {
+            this.order = enterprise.getMasterOrderList().CreateNewOrder(customer);
+            txtOrderID.setText(String.valueOf(this.order.getId()));
+            selectedCustomer = customer;
+        }
+        // Adding product to order and updating table
+        this.order.getProductList().add(product);
+        populateCartTable();
+        txtTax.setText(Double.toString(this.order.getCalculatedTax()));
+        txtFinalPrice.setText(Double.toString(this.order.getTotalPrice()));
+    }//GEN-LAST:event_btnAddToCartActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        userProcessContainer.remove(this);
+        CardLayout layout = (CardLayout) userProcessContainer.getLayout();
+        layout.previous(userProcessContainer);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnSearchCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCustomerActionPerformed
+        // TODO add your handling code here:
+        String keyword = txtSearchCustomer.getText();
+        if (keyword.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Customer search field cannot be blank.");
+            return;
+        }
+        populateTable(keyword);
+    }//GEN-LAST:event_btnSearchCustomerActionPerformed
+
+    private void btnSearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchProductActionPerformed
+        // TODO add your handling code here:
+        String keyword = txtSearchProduct.getText();
+        if (keyword.isBlank()) {
+            JOptionPane.showMessageDialog(this, "Product search field cannot be blank.");
+            return;
+        }
+        populateProductTable(keyword);
+    }//GEN-LAST:event_btnSearchProductActionPerformed
+
+    private void btnRemoveFromCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveFromCartActionPerformed
+        // Checking if product from cart is selected or not
+        int selectedRow = tblCart.getSelectedRow();
+        if (selectedRow < 0){
+            JOptionPane.showMessageDialog(this, "Please select product from cart first.");
+            return;
+        }
+        Product product = (Product) tblCart.getValueAt(selectedRow, 0);
+        // Removing product from order and updating table
+        this.order.getProductList().remove(product);
+        populateCartTable();
+        txtTax.setText(Double.toString(this.order.getCalculatedTax()));
+        txtFinalPrice.setText(Double.toString(this.order.getTotalPrice()));
+    }//GEN-LAST:event_btnRemoveFromCartActionPerformed
+
+    private void btnSendToManifacturingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToManifacturingActionPerformed
+        // TODO add your handling code here:
+        String message = "";
+        for (Product p: this.order.getProductList()) {
+            message += p.getName()+" ";
+            message += "Weight: "+ String.valueOf(p.getWeight())+ "\n";
+        }
+        message += "$" +String.valueOf(this.order.getId());
+        WorkRequest request = new WorkRequest();
+        request.setMessage(message);
+        request.setSender(account);
+        request.setStatus("Sent");
+        Organization org = null;
+        for (Enterprise e: system.getNetworkList().get(0).getEnterpriseDirectory().getEnterpriseList()) {
+            for (Organization o : e.getOrganizationDirectory().getOrganizationList()){
+                if (o instanceof HandCraftOrganization){
+                    org = o;
+                    break;
+                }
+            }
+            if (org!=null){
+                break;
+            }
+        }
+        if (org!=null){
+                org.getWorkQueue().getWorkRequestList().add(request);
+                account.getWorkQueue().getWorkRequestList().add(request);
+            }
+        JOptionPane.showMessageDialog(this, "Sent to manufacturing");
+        txtSearchCustomer.setText("");
+        txtSearchProduct.setText("");
+        txtOrderID.setText("");
+        txtTax.setText("");
+        txtFinalPrice.setText("");
+        selectedCustomer = null;
+        order = null;
+        populateTable();
+        populateProductTable();
+        populateCartTable();
+    }//GEN-LAST:event_btnSendToManifacturingActionPerformed
+
+    private void btnSendToBillingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToBillingActionPerformed
+        // TODO add your handling code here:
+        
+        String message = "";
+        for (Product p: this.order.getProductList()) {
+            message += p.getName()+" ";
+            message += "Weight: "+ String.valueOf(p.getWeight())+ "\n";
+        }
+        message += "$" +String.valueOf(this.order.getId());
+        WorkRequest request = new WorkRequest();
+        request.setMessage(message);
+        request.setSender(account);
+        request.setStatus("Sent");
+        Organization org = null;
+        for (Organization o : enterprise.getOrganizationDirectory().getOrganizationList()){
+            if (o instanceof BillingOrganization){
+                org = o;
+                break;
+            }
+        }
+        if (org!=null){
+            org.getWorkQueue().getWorkRequestList().add(request);
+            account.getWorkQueue().getWorkRequestList().add(request);
+        }
+        JOptionPane.showMessageDialog(this, "Sent to Billing");
+        txtSearchCustomer.setText("");
+        txtSearchProduct.setText("");
+        txtOrderID.setText("");
+        txtTax.setText("");
+        txtFinalPrice.setText("");
+        selectedCustomer = null;
+        order = null;
+        populateTable();
+        populateProductTable();
+        populateCartTable();
+    }//GEN-LAST:event_btnSendToBillingActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddToCart;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JToggleButton btnRemoveFromCart;
+    private javax.swing.JButton btnSearchCustomer;
+    private javax.swing.JButton btnSearchProduct;
+    private javax.swing.JButton btnSendToBilling;
+    private javax.swing.JButton btnSendToManifacturing;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblFinalPrice;
+    private javax.swing.JLabel lblRepairGold;
+    private javax.swing.JTable tblCart;
+    private javax.swing.JTable tblCustomer;
+    private javax.swing.JTable tblProduct;
+    private javax.swing.JTextField txtFinalPrice;
+    private javax.swing.JTextField txtOrderID;
+    private javax.swing.JTextField txtSearchCustomer;
+    private javax.swing.JTextField txtSearchProduct;
+    private javax.swing.JTextField txtTax;
+    // End of variables declaration//GEN-END:variables
+}
